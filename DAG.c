@@ -1,3 +1,7 @@
+#include<stdio.h>
+#include<malloc.h>
+
+
 struct Point
 {
     char name;
@@ -110,4 +114,73 @@ void Determine_The_Node_Type(struct DAG *dag)
             dag->point[i].flag = 0; ///开始点
         }
     }
+}
+int main()
+{
+    struct DAG dag;
+    dag.lineCount = dag.pointCount = 0;
+    int i, j;
+    printf("输入定点数:");
+    scanf("%d", &dag.pointCount);
+    for(i = 0; i<dag.pointCount; i++)
+    {
+        printf("第%d个定点：", i+1);
+        getchar();
+        scanf("%c", &dag.point[i].name);
+
+        dag.point[i].flag = 3; ///默认设置为单独的孤点，没有任何线相连
+        dag.point[i].run1 = run1;
+    }
+    printf("输入边数: ");
+    char a, b;
+    int flag, flag1;
+
+    scanf("%d", &dag.lineCount);
+    if(dag.lineCount!=0)
+        getchar();
+    for(i = 0; i<dag.lineCount; i++)
+    {
+        printf("第%d条边和权重[例如输入a b c，即表示a->b，权重为c]:", i+1);
+        scanf("%c %c", &a, &b);
+        flag = flag1 = 0;
+        int l = 0;
+        for(j = 0; j<dag.pointCount; j++)
+        {
+            if(dag.point[j].name == a)
+            {
+                flag = j;
+                l++;
+            }
+            if(dag.point[j].name == b)
+            {
+                flag1 = j;
+                l++;
+            }
+        }
+        if(l != 2)
+        {
+            i -= 1;
+            printf("输入节点不存在!");
+            continue;
+        }
+        dag.line[i].start = dag.point[flag];
+        dag.line[i].end = dag.point[flag1];
+        scanf("%d", &dag.line[i].len);
+        getchar();
+    }
+    Determine_The_Node_Type(&dag);///不能删，这是判断节点的类型的start\end\normal点
+
+    dag.check = check;
+    dag.run = run;
+    dag.getStartPoint = getStartPoint;  ///这个结构体有多少个函数，就要在这个有多少个结构体内，函数指针指向函数的声明。
+    dag.getEndPoint = getEndPoint;
+
+    dag.check(dag);///检查定点是否有边或者定点
+    dag.run(dag);///打印图
+
+    dag.getStartPoint(dag);///图的开始节点
+    dag.getEndPoint(dag);///图的结束节点
+
+
+    return 0;
 }
