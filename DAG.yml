@@ -1,13 +1,18 @@
+order: Vertical
+
 elements:
   start point: a
   end point: e
-  Line: 1, 2, 3, 4, 5, 6, 7, 8
+  Line number: 1, 2, 3, 4, 5, 6, 7, 8
   node point: b, c, d
 
-connection from top to bottom:
-  First layer: a -> b, a -> c, a -> d, a -> e
-  seconde layer: b -> d, c -> d
-  Third layer: d -> e
+connection:
+  First Horizontal layer: a -> b, a -> c, a -> d, a -> e
+  connect order of Line: 1, 3, 2, 4
+  seconde Horizontal layer: b -> d, c -> d
+  connect order of Line: 5, 7
+  Third Horizontal layer: d -> e
+  connect order of Line: 8
 
 logic:
   Acyclic: True
