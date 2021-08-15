@@ -7,6 +7,7 @@ elements:
   node point: b, c, d
 
 connection:
+  order: top to bottom
   First Horizontal layer: a -> b, a -> c, a -> d, a -> e
   connect order of Line: 1, 3, 2, 4
   seconde Horizontal layer: b -> d, c -> d
