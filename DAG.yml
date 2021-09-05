@@ -1,16 +1,54 @@
-elements:
-  start point: a
-  end point: e
-  Line: 1, 2, 3, 4, 5, 6, 7, 8
-  node point: b, c, d
+...
+kind: DAG
+namespace: dataanalytics
 
-connection from top to bottom:
-  First layer: a -> b, a -> c, a -> d, a -> e
-  seconde layer: b -> d, c -> d
-  Third layer: d -> e
+tasks:
+  - name: Point
+    type: 
+      StartPoint: flag == 0
+      EndPoint: flag == 1
+      
+  - name: Line
+    function: connect points
+
+  - name: DAG
+    Input: lineCount, pointCount, check
+    Pointer: getStartPoint, getEndPoint, run, check
 
 logic:
-  Acyclic: True
-  Tandem: True
+  - judgeStartPoint: dag.point[i].flag == 0
+    Output: 开始节点
 
-...   
+  - judgeEndPoint: dag.point[i].flag == 1
+    Output: 结束节点
+
+run:
+  - judgepointCount: dag.pointCount != 0
+    cycle: dag.point[i].run1(dag.point[i], i+1)
+    rule: i<dag.pointCount, continue
+    Output: 不存在图！
+
+check:
+  - judgelineCount: dag.lineCount == 0
+    Output: 不存在边\n
+  - judgepointCount: dag.pointCount == 0
+    Output: 不存在节点\n
+
+run1:
+  - Output: k, point.name, point.flag
+
+Determine_The_Node_Type:
+  - Input: i, start[255] = {0}, end[255] = {0}
+    cycle1: i = 0; i<dag->lineCount; i++
+    rule1: i<dag->lineCount, continue
+
+    cycle2: i = 0; i<dag->pointCount; i++
+    rule2: start[dag->point[i].name] == 2 && end[dag->point[i].name]==2
+    Output1: dag->point[i].flag = 2 (Normal Point)
+    rule3: start[dag->point[i].name] == 0 && end[dag->point[i].name]==2
+    Output2: dag->point[i].flag = 1 (EndPoint)
+    rule4: start[dag->point[i].name] == 2 && end[dag->point[i].name]==0
+    Output3: dag->point[i].flag = 0 (StartPoint)
+
+...
+
