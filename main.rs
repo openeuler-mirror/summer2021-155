@@ -69,6 +69,4 @@ void check(struct DAG dag)
 fn main() {
     let flag = Point{Pointname: start, end, normal, flag: 0, 1, 2, run: String};
     let Line = Line{Pointstart: a, Pointend: e, len}
-    let mut check = String::new();
-
 }
